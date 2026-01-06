@@ -1,0 +1,28 @@
+# Données traitées
+datasets/processed/
+
+# Modèles entraînés
+models/*.pth
+
+# Résultats d'entraînement
+results/*.png
+results/*.csv
+
+# Fichiers temporaires
+*.tmp
+*.log
+
+# Environnements Python
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
