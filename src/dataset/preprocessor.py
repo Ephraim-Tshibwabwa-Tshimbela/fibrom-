@@ -1,3 +1,10 @@
+"""
+================================================================================
+PARTIE 2 : PIPELINE DE PRÉTRAITEMENT (ETL)
+================================================================================
+Objectif : Transformer les données brutes en tenseurs propres pour le modèle.
+Responsabilités : Nettoyage, Encodage, Normalisation (StandardScaler), Split Train/Test.
+"""
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -66,29 +73,29 @@ class NF1DatasetPreprocessor:
         
         return datasets, scaler        
         
-def load_raw_data(self):
-    """Charger les données brutes depuis Excel"""
-    df = pd.read_excel(
-        self.data_path, 
-        sheet_name=self.config['data']['sheet_name'],
-        header=0
-    )
-    
-    # SUPPRIMER LA COLONNE D'INDEX SI ELLE EXISTE
-    # Plusieurs façons possibles
-    if df.columns[0] == 'Unnamed: 0':
-        df = df.drop(columns=[df.columns[0]])
-    
-    # OU: Supprimer toute colonne nommée 'Unnamed: 0'
-    if 'Unnamed: 0' in df.columns:
-        df = df.drop(columns=['Unnamed: 0'])
-    
-    # Renommer les colonnes pour uniformité
-    if 'Learninn Disability' in df.columns:
-        df = df.rename(columns={'Learninn Disability': 'Learning Disability'})
-    
-    print(f" Dataset chargé - Shape: {df.shape}, Colonnes: {list(df.columns)}")
-    return df
+    def load_raw_data(self):
+        """Charger les données brutes depuis Excel"""
+        df = pd.read_excel(
+            self.data_path, 
+            sheet_name=self.config['data']['sheet_name'],
+            header=0
+        )
+        
+        # SUPPRIMER LA COLONNE D'INDEX SI ELLE EXISTE
+        # Plusieurs façons possibles
+        if df.columns[0] == 'Unnamed: 0':
+            df = df.drop(columns=[df.columns[0]])
+        
+        # OU: Supprimer toute colonne nommée 'Unnamed: 0'
+        if 'Unnamed: 0' in df.columns:
+            df = df.drop(columns=['Unnamed: 0'])
+        
+        # Renommer les colonnes pour uniformité
+        if 'Learninn Disability' in df.columns:
+            df = df.rename(columns={'Learninn Disability': 'Learning Disability'})
+        
+        print(f" Dataset chargé - Shape: {df.shape}, Colonnes: {list(df.columns)}")
+        return df
     
     def preprocess_data(self, df):
         """Prétraiter les données"""
@@ -191,50 +198,3 @@ def load_raw_data(self):
         
         print(f"Données sauvegardées dans {path}")
     
-    def process_pipeline(self):
-        """Pipeline complet de prétraitement"""
-        print("Chargement des données brutes...")
-        df = self.load_raw_data()
-        
-        print("Prétraitement des données...")
-        X, y = self.preprocess_data(df)
-        
-        print("Division train/val/test...")
-        X_train, X_val, X_test, y_train, y_val, y_test = self.split_data(X, y)
-        
-        print("Normalisation des données...")
-        X_train_norm, X_val_norm, X_test_norm, scaler = self.normalize_data(
-            X_train, X_val, X_test
-        )
-        
-        # Convertir en tensors PyTorch
-        train_dataset = {
-            'X': torch.FloatTensor(X_train_norm.values),
-            'y': torch.FloatTensor(y_train.values).unsqueeze(1)
-        }
-        
-        val_dataset = {
-            'X': torch.FloatTensor(X_val_norm.values),
-            'y': torch.FloatTensor(y_val.values).unsqueeze(1)
-        }
-        
-        test_dataset = {
-            'X': torch.FloatTensor(X_test_norm.values),
-            'y': torch.FloatTensor(y_test.values).unsqueeze(1)
-        }
-        
-        # Sauvegarder
-        datasets = {
-            'train': train_dataset,
-            'val': val_dataset,
-            'test': test_dataset
-        }
-        
-        self.save_processed_data(datasets)
-        
-        print(f"Taille des datasets:")
-        print(f"  Train: {len(train_dataset['X'])} échantillons")
-        print(f"  Validation: {len(val_dataset['X'])} échantillons")
-        print(f"  Test: {len(test_dataset['X'])} échantillons")
-        
-        return datasets, scaler

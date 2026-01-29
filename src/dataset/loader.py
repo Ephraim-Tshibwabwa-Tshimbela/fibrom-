@@ -1,3 +1,10 @@
+"""
+================================================================================
+PARTIE 2 : PIPELINE DE PRÉTRAITEMENT (ETL) - CHARGEMENT
+================================================================================
+Objectif : Créer la classe Dataset et les DataLoaders PyTorch.
+Permet d'alimenter le modèle par batchs lors de l'entraînement.
+"""
 import torch
 from torch.utils.data import Dataset, DataLoader
 import yaml
