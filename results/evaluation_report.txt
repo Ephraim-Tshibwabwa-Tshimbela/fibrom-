@@ -1,0 +1,25 @@
+
+RAPPORT D'ÉVALUATION - CLASSIFICATION NF1
+==================================================
+
+PERFORMANCES SUR LE TEST SET:
+• Accuracy:  0.4444
+• Precision: 0.4167
+• Recall:    0.4762
+• F1-Score:  0.4444
+• AUC-ROC:   0.4762
+
+MATRICE DE CONFUSION:
+[[10 14]
+ [11 10]]
+
+RAPPORT DE CLASSIFICATION:
+              precision    recall  f1-score   support
+
+    Sporadic       0.48      0.42      0.44        24
+    Familial       0.42      0.48      0.44        21
+
+    accuracy                           0.44        45
+   macro avg       0.45      0.45      0.44        45
+weighted avg       0.45      0.44      0.44        45
+
